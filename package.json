@@ -9,6 +9,8 @@
   "author": "zw9love",
   "license": "ISC",
   "dependencies": {
+    "express": "^4.16.3",
+    "opn": "^5.3.0",
     "ws": "^3.3.1"
   }
 }

@@ -18,19 +18,20 @@
                {
                   // Web Socket 已连接上，使用 send() 方法发送数据
                   ws.send("daxiong");
-                  alert("数据发送中...");
+                  console.log("数据发送中...");
                };
                 
                ws.onmessage = function (evt) 
                { 
                   var received_msg = evt.data;
-                  alert("数据已接收...");
+                  console.log(`后台传的数据${received_msg}`)
+                //   alert("数据已接收...");
                };
                 
                ws.onclose = function()
                { 
                   // 关闭 websocket
-                  alert("连接已关闭..."); 
+                  console.log("连接已关闭..."); 
                };
             }
             
