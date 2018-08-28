@@ -16,19 +16,19 @@ var server = new ws({ port: 9090 });
 
 server.addListener('connection', function (conn) {
     console.log('connection....');
-    // conns.push(conn);  
+    // conns.push(conn);
     conn.addListener('message', function (msg) {
-        console.log(msg);
-        conn.send("jingxiang");
+        console.log('前台传的数据: ' + msg);
+        // conn.send("jingxiang");
         let n = 0;
-        setInterval(o => {
-            conn.send(++n);
-        }, 1000)
-        // for(var i=0; i<conns.length; i++){  
-        //     if(conns[i]!=conn){  
-        //         conns[i].send(msg);  
-        //     }  
-        // }  
+        // setInterval(o => {
+        //     conn.send(++n);
+        // }, 1000)
+        // for(var i=0; i<conns.length; i++){
+        //     if(conns[i]!=conn){
+        //         conns[i].send(msg);
+        //     }
+        // }
     });
 });
 
@@ -45,4 +45,4 @@ app.listen(serverInfo.port, function () {
     opn(uri)
 })
 
-console.log('ws://localhost:9090 running......');  
+console.log('ws://localhost:9090 running......');
