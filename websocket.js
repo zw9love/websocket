@@ -14,16 +14,42 @@ var ws = require('ws').Server;
 
 var server = new ws({ port: 9090 });
 
+function getDouble(val){
+    val = val + ''
+    if(val.length > 1){
+        return val
+    }else{
+        return '0' + val
+    }
+}
+
+function getTime(){
+
+    let date = new Date()
+
+    return date.getFullYear() + '-' + getDouble(date.getMonth() + 1) + '-' + getDouble(date.getDate()) + ' ' + getDouble(date.getHours()) + ':' + getDouble(date.getMinutes())  + ':' + getDouble(date.getSeconds())
+}
+
+
 server.addListener('connection', function (conn) {
     console.log('connection....');
     // conns.push(conn);
+    let n = 0;
+    setInterval(o => {
+        ++n
+        let postData = {
+            name: '在线客服08号-小张',
+            content: 'test' + n,
+            time: getTime()
+        }
+        conn.send(JSON.stringify(postData));
+    }, 5000)
     conn.addListener('message', function (msg) {
-        console.log('前台传的数据: ' + msg);
+        msg = JSON.parse(msg)
+        console.log(msg.time);
+        console.log(msg.content);
+        console.log(msg.name);
         // conn.send("jingxiang");
-        let n = 0;
-        // setInterval(o => {
-        //     conn.send(++n);
-        // }, 1000)
         // for(var i=0; i<conns.length; i++){
         //     if(conns[i]!=conn){
         //         conns[i].send(msg);
@@ -39,6 +65,7 @@ app.get('/', (request, response, next) => {
         response.end(data.toString())
     })
 })
+
 app.listen(serverInfo.port, function () {
     let uri = 'http://localhost:' + serverInfo.port
     console.log("Listening at: " + uri)
