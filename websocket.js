@@ -39,7 +39,7 @@ server.addListener('connection', function (conn) {
         ++n
         let postData = {
             name: '在线客服08号-小张',
-            content: 'test' + n,
+            content: 'test' + n + '<img src="dist/img/qq/' + n + '.gif">',
             time: getTime()
         }
         conn.send(JSON.stringify(postData));
