@@ -56,6 +56,10 @@ server.addListener('connection', function (conn) {
         //     }
         // }
     });
+
+    conn.addListener('close', function (msg) {
+        console.log('前台页面关闭。')
+    });
 });
 
 app.get('/', (request, response, next) => {
