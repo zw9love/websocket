@@ -8,11 +8,13 @@ let serverInfo = {
     port: 6789
 }
 
-var conns = [];
+let clients=[];
 
-var ws = require('ws').Server;
+let conns = [];
 
-var server = new ws({ port: 9090 });
+let ws = require('ws').Server;
+
+let server = new ws({ port: 9090 });
 
 function getDouble(val){
     val = val + ''
@@ -32,7 +34,11 @@ function getTime(){
 
 
 server.addListener('connection', function (conn) {
+    // CLIENTS.push(conn);
     console.log('connection....');
+
+    // var index = clients.push(conn) - 1;
+    // console.log(index)
     // conns.push(conn);
     let n = 0;
     setInterval(o => {
@@ -44,11 +50,10 @@ server.addListener('connection', function (conn) {
         }
         conn.send(JSON.stringify(postData));
     }, 5000)
+
     conn.addListener('message', function (msg) {
         msg = JSON.parse(msg)
-        console.log(msg.time);
-        console.log(msg.content);
-        console.log(msg.name);
+        console.log(msg);
         // conn.send("jingxiang");
         // for(var i=0; i<conns.length; i++){
         //     if(conns[i]!=conn){
@@ -56,7 +61,35 @@ server.addListener('connection', function (conn) {
         //     }
         // }
     });
+
+    conn.addListener('close', function (a, b) {
+        console.log('监听到conn被close。')
+        clients.splice(clients.indexOf(conn), 1)
+        // conn.close()
+        // conn.close(404, '前端关闭页面')
+        // server = new ws({ port: 9090 });
+        // CLIENTS.splice(CLIENTS.indexOf(conn), 1)
+        // console.log(a)
+        // console.log(b)
+    });
+    conn.addListener('error', function (a, b) {
+        console.log('监听到conn的error。')
+        clients.splice(clients.indexOf(conn), 1)
+        // clients.splice(index, 1);
+        // conn.close()
+        // conn.close(404, '前端关闭页面')
+        // server = new ws({ port: 9090 });
+        // CLIENTS.splice(CLIENTS.indexOf(conn), 1)
+        // console.log(a)
+        // console.log(b)
+    });
 });
+
+server.addListener('error', function (a, b) {
+    console.log('监听到server的error。')
+    console.log(a)
+    console.log(b)
+})
 
 app.get('/', (request, response, next) => {
     // console.log('进来了根页面')
@@ -66,10 +99,15 @@ app.get('/', (request, response, next) => {
     })
 })
 
+app.get('/api', (request, response, next) => {
+    // console.log('进来了根页面')
+    response.json([{name: '大熊', age: 30}, {name: '静香', age: 28}, {name: '胖虎', age: 33}])
+})
+
 app.listen(serverInfo.port, function () {
     let uri = 'http://localhost:' + serverInfo.port
     console.log("Listening at: " + uri)
-    opn(uri)
+    // opn(uri)
 })
 
 console.log('ws://localhost:9090 running......');

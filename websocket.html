@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title>websocket demo</title>
-
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript">
         var ws = null;
 
@@ -16,7 +16,11 @@
 
                 ws.onopen = function () {
                     // Web Socket 已连接上，使用 send() 方法发送数据
-                    ws.send("daxiong");
+                    var json = {
+                        name: '大熊',
+                        age: 30
+                    }
+                    ws.send(JSON.stringify(json));
                     console.log("数据发送中...");
                 };
 
@@ -38,10 +42,25 @@
             }
         }
 
+        window.onbeforeunload = function() {
+            ws.close()
+        }
+
         window.onload = function(){
+            WebSocketTest()
             document.getElementById("send").addEventListener("click", function(){
                 ws.send("大熊和静香")
             })
+
+            // $.ajax({
+            //     type: "GET",
+            //     url: "/api",
+            //     success: function(arr){
+            //         arr.forEach(o => {
+            //             $('#sse').append(`<h3>${o.name} ${o.age}</h3>`)
+            //         })
+            //     }
+            // });
         }
     </script>
 
@@ -49,7 +68,7 @@
 <body>
 
 <div id="sse">
-    <a href="javascript:WebSocketTest()">运行 WebSocket</a>
+    <!--<a href="javascript:;">运行 WebSocket</a>-->
     <button id="send">发送数据</button>
 </div>
 
