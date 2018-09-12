@@ -99,7 +99,7 @@ app.get('/', (request, response, next) => {
     })
 })
 
-app.get('/api', (request, response, next) => {
+app.post('/test', (request, response, next) => {
     // console.log('进来了根页面')
     response.json([{name: '大熊', age: 30}, {name: '静香', age: 28}, {name: '胖虎', age: 33}])
 })
