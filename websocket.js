@@ -2,6 +2,8 @@
 let express = require('express');
 let opn = require('opn');
 let fs = require("fs")
+let multipart = require('connect-multiparty')
+let multipartMiddleware = multipart()
 // import express from 'express'
 let app = express()
 let serverInfo = {
@@ -45,7 +47,7 @@ server.addListener('connection', function (conn) {
         ++n
         let postData = {
             name: '在线客服08号-小张',
-            content: 'test' + n + '<img class="emoji_icon" src="dist/img/emoji/' + n + '.png">',
+            content: 'test' + n + '😂',
             time: getTime()
         }
         conn.send(JSON.stringify(postData));
@@ -100,8 +102,15 @@ app.get('/', (request, response, next) => {
 })
 
 app.post('/test', (request, response, next) => {
-    // console.log('进来了根页面')
+    console.log('进来了test接口。')
     response.json([{name: '大熊', age: 30}, {name: '静香', age: 28}, {name: '胖虎', age: 33}])
+})
+
+app.post('/sendPhoto', multipartMiddleware, (request, response, next) => {
+    console.log('进来了sendPhoto接口。')
+    console.log(request.body)
+    console.log(request.files)
+    response.json({msg: '成功'})
 })
 
 app.listen(serverInfo.port, function () {
